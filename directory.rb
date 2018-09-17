@@ -4,7 +4,7 @@ def input_students
   puts "Please enter the name and cohort of the students (separated by space)"
   puts "To finish, just hit return twice"
   # get the first name
-  input_val = gets.chomp.strip.split(" ")
+  input_val = STDIN.gets.chomp.strip.split(" ")
   name = input_val[0]
   cohort = input_val[1] || "Default_Cohort"
   # while the name is not empty, repeat this code
@@ -18,8 +18,8 @@ def input_students
     end
     puts "Please enter the name and cohort of the next student (separated by space)"
     # get another name from the user
-    input_val = gets.chomp.strip.split(" ")
-    #input_val = gets.chomp.squish.split(" ")
+    input_val = STDIN.gets.chomp.strip.split(" ")
+    #input_val = STDIN.gets.chomp.squish.split(" ")
     name = input_val[0] 
     cohort = input_val[1] || "Default_Cohort"
   end
@@ -89,7 +89,7 @@ def print_specific_char
   end  
   puts "Please enter the character for students name"
   # get another name from the user
-  namechar = gets.chomp
+  namechar = STDIN.gets.chomp
   count = 0
   @students.each do |student|
     if @student[:name][0] == namechar
@@ -141,7 +141,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process (gets.chomp)
+    process (STDIN.gets.chomp)
    end
 end
 
@@ -186,8 +186,8 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv","r")
+def load_students (filename = "students.csv")
+  file = File.open(filename,"r")
   file.readlines.each {|line|
     name, cohort,hobby,country = line.chomp.split(",")
     @students << {name: name,cohort: cohort, hobby: hobby, country: country}
@@ -195,6 +195,16 @@ def load_students
   file.close
 end  
 
+def try_load_students
+  filename = ARGV.first
+  return if filename.isnil?
+  if (File.exists?(filename))
+    load_students(filename)
+    puts "Loaded #{@students.count} from file: #{filename}"
+  else
+    puts "Sorry but this file does not exist: #{filename}"
+  end  
+end
 interactive_menu
 #students = input_students
 #nothing happens until we call the methods
