@@ -6,22 +6,26 @@ def input_students
   # get the first name
   input_val = STDIN.gets.chomp.strip.split(" ")
   name = input_val[0]
-  cohort = input_val[1] || "Default_Cohort"
   # while the name is not empty, repeat this code
   while name != nil do
     # add the student hash to the array
-    @students << {name: name, cohort: cohort, country: random_country, hobby: random_hobby}
-    if @students.count == 1
-      puts "Now we have #{@students.count} student"
-    else
-      puts "Now we have #{@students.count} students"
-    end
+    student_string_to_hash(input_val.join(",") << random_hobby << "," << random_country)
+    print_count
     puts "Please enter the name and cohort of the next student (separated by space)"
     # get another name from the user
     input_val = STDIN.gets.chomp.strip.split(" ")
     #input_val = STDIN.gets.chomp.squish.split(" ")
     name = input_val[0] 
-    cohort = input_val[1] || "Default_Cohort"
+  end
+end
+
+print_count
+  if @students.length == 0
+     puts "No students!"
+  elsif @students.count == 1
+     puts "Now we have #{@students.count} student"
+  else
+     puts "Now we have #{@students.count} students"
   end
 end
 
@@ -39,103 +43,15 @@ def print_header
 end
 
 def print_student_list
-  if @students.length == 0
-    puts "No students!"
-    return
-  end  
   @students.each_with_index do |student, index|
     puts "#{index+1}. #{@student[:name]} belongs to (#{@student[:cohort]} cohort) with hobby #{@student[:hobby]} coming from #{@student[:country]}"
   end
+ print_count
 end
-
-def print_while
-  count = 0
-  if @students.length == 0
-    puts "No students!"
-    return
-  end  
-  while count < @students.length
-    puts "#{count + 1}. #{@students[count][:name]} belongs to (#{@students[count][:cohort]} cohort)"
-    count += 1
-  end
-end
-
-def print_cohort
-  #puts students.length.to_s
-  if @students.length == 0
-    puts "No students!"
-    return
-  end  
-  @students = @students.group_by {|arhash| arhash[:cohort]}
-  puts @students
-  @students.each{|arhash|
-    puts arhash.class
-    puts arhash
-    arhash.each{|arcon|
-      puts arcon.class
-      puts arcon
-      puts "Now for the cohort: #{k}"
-        v.each {|studentHash|
-          puts " #{studentHash[:name]} belongs to (#{studentHash[:cohort]} cohort)"
-      }
-    }
-  }
-end
-
-def print_specific_char
-  if @students.length == 0
-    puts "No students!"
-    return
-  end  
-  puts "Please enter the character for students name"
-  # get another name from the user
-  namechar = STDIN.gets.chomp
-  count = 0
-  @students.each do |student|
-    if @student[:name][0] == namechar
-      count += 1
-      puts "#{count}. #{student[:name]} belongs to (#{student[:cohort]} cohort)"
-    end
-  end
-  if count == 1
-    puts "Overall we have #{count} student whose name starts with the char #{namechar}".center(100,"*")
-  else
-    puts "Overall we have #{count} students whose name starts with the char #{namechar}".center(100,"*")
-  end
-
-end
-
-def print_specific_size
-if @students.length == 0
-  puts "No students!"
-  return
-end    
-puts "The students with name shorter than 12 are:"
-count = 0
-  @students.each do |student|
-    if @student[:name].length < 12
-      count += 1
-      puts "#{count}. #{@student[:name]} belongs to (#{@student[:cohort]} cohort)"
-    end
-  end
-  if count == 1
-    puts "Overall we have #{count} student whose name has less than 12 chars.".center(100,"*")
-  else
-    puts "Overall we have #{count} students whose name has less than 12 chars.".center(100,"*")
-  end
-end
-
 
 def print_footer
-  if @students.length == 0
-    puts "No students!"
-    return
-  end  
-  if @student.count ==1
-    puts "Overall, we have #{@students.count} great student"
-  else
-    puts "Overall, we have #{@students.count} great students"
-  end
+ puts "Footer".center(100,"*")
+ print_count
 end
 
 def interactive_menu
@@ -159,16 +75,26 @@ def print_menu
   puts "9. Exit" # 9 because we'll be adding more items  
 end
 
+def check_file
+  if (ARGV.first == nil)
+    STDIN.puts "Please enter the filename to be used"
+    filename = gets.chomp
+    return filename
+  else 
+    return ARGV.first
+  end 
+end 
+
 def process(selection)
   case selection
     when "1"
       input_students
     when "2"
       show_students
-    when "3"
-      save_students
+    when "3"      
+      save_students(check_file)
     when "4"
-      load_students
+      load_students(check_file)
     when "9"
       exit
     else
@@ -176,26 +102,32 @@ def process(selection)
   end
 end
 
-def save_students
-  file = File.open("students.csv","a")
+def save_students(filename = "students.csv")
+  file = File.open(filename, "a")
   @students.each {|student|
     student_data = [student[:name], student[:cohort], student[:hobby], student[:country]]
     csv_line = student_date.join(",")
     file.puts csv_line
     }
   file.close
+ puts "#{@students.count} students saved in file:#{filename}"
 end
 
 def load_students (filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each {|line|
-    name, cohort, hobby, country = line.chomp.split(",")
-    @students << {name: name, cohort: cohort, hobby: hobby, country: country}
-  }  
+    student_string_to_hash(line)
+  }
   file.close
+  puts "#{@students.count} students loaded from file:#{filename}"
 end  
 
-def try_load_students
+def student_string_to_hash(line)
+  name, cohort, hobby, country = line.chomp.split(",")
+  @students << {name: name, cohort: cohort, hobby: hobby, country: country}
+ end 
+
+#def try_load_students
   filename = ARGV.first
   return if filename.isnil?
   if (File.exists?(filename))
@@ -203,6 +135,8 @@ def try_load_students
     puts "Loaded #{@students.count} from file: #{filename}"
   else
     puts "Sorry but this file does not exist: #{filename}"
+    load_students
+    puts "Loaded #{@students.count} from DEFAULT file: #{filename}"
   end  
 end
 
