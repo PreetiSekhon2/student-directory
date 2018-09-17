@@ -1,4 +1,4 @@
- # create an empty array as global variable
+# create an empty array as global variable
 @students = []
 def input_students
   puts "Please enter the name and cohort of the students (separated by space)"
@@ -8,13 +8,10 @@ def input_students
   name = input_val[0]
   # while the name is not empty, repeat this code
   while name != nil do
-    # add the student hash to the array
     student_string_to_hash(input_val.join(",") << random_hobby << "," << random_country)
     print_count
     puts "Please enter the name and cohort of the next student (separated by space)"
-    # get another name from the user
     input_val = STDIN.gets.chomp.strip.split(" ")
-    #input_val = STDIN.gets.chomp.squish.split(" ")
     name = input_val[0] 
   end
 end
@@ -46,7 +43,7 @@ def print_student_list
   @students.each_with_index do |student, index|
     puts "#{index+1}. #{@student[:name]} belongs to (#{@student[:cohort]} cohort) with hobby #{@student[:hobby]} coming from #{@student[:country]}"
   end
- print_count
+  print_count
 end
 
 def print_footer
