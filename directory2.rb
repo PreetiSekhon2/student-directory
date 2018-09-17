@@ -103,22 +103,20 @@ def process(selection)
 end
 
 def save_students(filename = "students.csv")
-  file = File.open(filename, "a")
+  File.open(filename, "a") do |line|
   @students.each {|student|
     student_data = [student[:name], student[:cohort], student[:hobby], student[:country]]
     csv_line = student_date.join(",")
-    file.puts csv_line
+    line.puts csv_line
     }
-  file.close
+  end  
  puts "#{@students.count} students saved in file:#{filename}"
 end
 
 def load_students (filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each {|line|
+  File.open(filename).each do |line|
     student_string_to_hash(line)
-  }
-  file.close
+  end
   puts "#{@students.count} students loaded from file:#{filename}"
 end  
 
