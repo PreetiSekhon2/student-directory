@@ -100,21 +100,22 @@ def process(selection)
 end
 
 def save_students(filename = "students.csv")
-  File.open(filename, "a") do |line|
-  @students.each {|student|
-    student_data = [student[:name], student[:cohort], student[:hobby], student[:country]]
-    csv_line = student_date.join(",")
-    line.puts csv_line
+  CSV.open(filename, "a") do |line|
+    @students.each {|student|
+      student_data = [student[:name], student[:cohort], student[:hobby], student[:country]]
+      csv_line = student_date.join(",")
+      #line.puts csv_line
+      line << csv_line
     }
-  end  
+   end  
  puts "#{@students.count} students saved in file:#{filename}"
 end
 
 def load_students (filename = "students.csv")
-  File.open(filename).each do |line|
+  CSV.foreach(filename) do |line|
     student_string_to_hash(line)
   end
-  puts "#{@students.count} students loaded from file:#{filename}"
+  puts "#{@students.count + 1} students loaded from file:#{filename}"
 end  
 
 def student_string_to_hash(line)
@@ -122,20 +123,7 @@ def student_string_to_hash(line)
   @students << {name: name, cohort: cohort, hobby: hobby, country: country}
  end 
 
-#def try_load_students
-  filename = ARGV.first
-  return if filename.isnil?
-  if (File.exists?(filename))
-    load_students(filename)
-    puts "Loaded #{@students.count} from file: #{filename}"
-  else
-    puts "Sorry but this file does not exist: #{filename}"
-    load_students
-    puts "Loaded #{@students.count} from DEFAULT file: #{filename}"
-  end  
-end
 
-try_load_students
 interactive_menu
 #students = input_students
 #nothing happens until we call the methods
