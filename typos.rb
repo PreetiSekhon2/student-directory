@@ -23,9 +23,9 @@ def print_header
 end
 
 def print(students)
-  students.each do { |student|
+  students.each { |student|
     puts "#{student[:name]} belongs to #{student[:cohort]} cohort)"
-  end
+  }
 end
 
 def print_footer names
