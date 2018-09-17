@@ -179,7 +179,7 @@ end
 def save_students
   file = File.open("students.csv","a")
   @students.each {|student|
-    student_data = [student[:name],student[:cohort],student[:hobby].student[:country]]
+    student_data = [student[:name], student[:cohort], student[:hobby], student[:country]]
     csv_line = student_date.join(",")
     file.puts csv_line
     }
@@ -187,10 +187,10 @@ def save_students
 end
 
 def load_students (filename = "students.csv")
-  file = File.open(filename,"r")
+  file = File.open(filename, "r")
   file.readlines.each {|line|
-    name, cohort,hobby,country = line.chomp.split(",")
-    @students << {name: name,cohort: cohort, hobby: hobby, country: country}
+    name, cohort, hobby, country = line.chomp.split(",")
+    @students << {name: name, cohort: cohort, hobby: hobby, country: country}
   }  
   file.close
 end  
@@ -205,6 +205,8 @@ def try_load_students
     puts "Sorry but this file does not exist: #{filename}"
   end  
 end
+
+try_load_students
 interactive_menu
 #students = input_students
 #nothing happens until we call the methods
