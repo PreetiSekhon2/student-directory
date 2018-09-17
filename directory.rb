@@ -170,6 +170,16 @@ def process(selection)
   end
 end
 
+def save_students
+  file = File.open("students.csv","a")
+  @students.each {|student|
+    student_data = [student[:name],student[:cohort],student[:hobby].student[:country]]
+    csv_line = student_date.join(",")
+    file.puts csv_line
+    }
+  file.close
+end
+
 interactive_menu
 #students = input_students
 #nothing happens until we call the methods
