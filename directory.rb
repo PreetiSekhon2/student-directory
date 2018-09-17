@@ -38,7 +38,7 @@ def print_header
   puts "--------------------------------".center(100,"*")
 end
 
-def print
+def print_student_list
   if @students.length == 0
     puts "No students!"
     return
@@ -94,7 +94,7 @@ def print_specific_char
   @students.each do |student|
     if @student[:name][0] == namechar
       count += 1
-      puts "#{count}. #{@student[:name]} belongs to (#{@student[:cohort]} cohort)"
+      puts "#{count}. #{student[:name]} belongs to (#{student[:cohort]} cohort)"
     end
   end
   if count == 1
@@ -147,7 +147,7 @@ end
 
 def show_students
   print_header
-  print
+  print_student_list
   print_footer
 end
 
