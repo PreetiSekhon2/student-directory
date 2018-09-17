@@ -19,7 +19,8 @@ def input_students
     puts "Please enter the name and cohort of the next student (separated by space)"
     # get another name from the user
     input_val = gets.chomp.strip.split(" ")
-    name = input_val[0]
+    #input_val = gets.chomp.squish.split(" ")
+    name = input_val[0] 
     cohort = input_val[1] || "Default_Cohort"
   end
   # return the array of students
@@ -40,6 +41,10 @@ def print_header
 end
 
 def print(students)
+  if students.length == 0
+    puts "No students!"
+    return
+  end  
   students.each_with_index do |student, index|
     puts "#{index+1}. #{student[:name]} belongs to (#{student[:cohort]} cohort) with hobby #{student[:hobby]} coming from #{student[:country]}"
   end
@@ -47,6 +52,10 @@ end
 
 def print_while(students)
   count = 0
+  if students.length == 0
+    puts "No students!"
+    return
+  end  
   while count < students.length
     puts "#{count + 1}. #{students[count][:name]} belongs to (#{students[count][:cohort]} cohort)"
     count += 1
@@ -55,6 +64,10 @@ end
 
 def print_cohort(students)
   #puts students.length.to_s
+  if students.length == 0
+    puts "No students!"
+    return
+  end  
   students = students.group_by {|arhash| arhash[:cohort]}
   puts students
   students.each{|arhash|
@@ -72,6 +85,10 @@ def print_cohort(students)
 end
 
 def print_specific_char(students)
+  if students.length == 0
+    puts "No students!"
+    return
+  end  
   puts "Please enter the character for students name"
   # get another name from the user
   namechar = gets.chomp
@@ -91,6 +108,10 @@ def print_specific_char(students)
 end
 
 def print_specific_size(students)
+if students.length == 0
+  puts "No students!"
+  return
+end    
 puts "The students with name shorter than 12 are:"
 count = 0
   students.each do |student|
@@ -108,6 +129,10 @@ end
 
 
 def print_footer(students)
+  if students.length == 0
+    puts "No students!"
+    return
+  end  
   if student.count ==1
     puts "Overall, we have #{students.count} great student"
   else
