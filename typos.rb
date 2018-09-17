@@ -23,13 +23,20 @@ def print_header
 end
 
 def print(students)
+  if students.length == 0
+    puts "No students!"
+    return
+  end  
   students.each { |student|
     puts "#{student[:name]} belongs to #{student[:cohort]} cohort)"
   }
 end
 
 def print_footer names
-  puts "Overall, we have #{names.count} great students"
+  if names.length == 0
+    puts "No students!"
+    else puts "Overall, we have #{names.count} great students"
+  end  
 end
 
 puts "Typos are now going to be corrected!"
