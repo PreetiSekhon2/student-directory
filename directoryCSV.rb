@@ -1,4 +1,5 @@
 # create an empty array as global variable
+require 'csv'
 @students = []
 def input_students
   puts "Please enter the name and cohort of the students (separated by space)"
@@ -12,11 +13,11 @@ def input_students
     print_count
     puts "Please enter the name and cohort of the next student (separated by space)"
     input_val = STDIN.gets.chomp.strip.split(" ")
-    name = input_val[0] 
+    name = input_val[0]
   end
 end
 
-print_count
+def print_count
   if @students.length == 0
      puts "No students!"
   elsif @students.count == 1
@@ -69,7 +70,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
-  puts "9. Exit" # 9 because we'll be adding more items  
+  puts "9. Exit" # 9 because we'll be adding more items
 end
 
 def check_file
@@ -77,10 +78,10 @@ def check_file
     STDIN.puts "Please enter the filename to be used"
     filename = gets.chomp
     return filename
-  else 
+  else
     return ARGV.first
-  end 
-end 
+  end
+end
 
 def process(selection)
   case selection
@@ -88,7 +89,7 @@ def process(selection)
       input_students
     when "2"
       show_students
-    when "3"      
+    when "3"
       save_students(check_file)
     when "4"
       load_students(check_file)
@@ -107,7 +108,7 @@ def save_students(filename = "students.csv")
       #line.puts csv_line
       line << csv_line
     }
-   end  
+ end
  puts "#{@students.count} students saved in file:#{filename}"
 end
 
@@ -116,12 +117,12 @@ def load_students (filename = "students.csv")
     student_string_to_hash(line)
   end
   puts "#{@students.count + 1} students loaded from file:#{filename}"
-end  
+end
 
 def student_string_to_hash(line)
-  name, cohort, hobby, country = line.chomp.split(",")
+  name, cohort, hobby, country = line[0],line[1],line[2],line[3]
   @students << {name: name, cohort: cohort, hobby: hobby, country: country}
- end 
+ end
 
 
 interactive_menu
