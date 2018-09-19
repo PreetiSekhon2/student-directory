@@ -42,7 +42,7 @@ end
 
 def print_student_list
   @students.each_with_index do |student, index|
-    puts "#{index+1}. #{@student[:name]} belongs to (#{@student[:cohort]} cohort) with hobby #{@student[:hobby]} coming from #{@student[:country]}"
+    puts "#{index+1}. #{student[:name]} belongs to (#{student[:cohort]} cohort) with hobby #{student[:hobby]} coming from #{student[:country]}"
   end
   print_count
 end
@@ -120,6 +120,8 @@ def load_students (filename = "students.csv")
 end
 
 def student_string_to_hash(line)
+  puts line
+  puts line.class.name
   name, cohort, hobby, country = line[0],line[1],line[2],line[3]
   @students << {name: name, cohort: cohort, hobby: hobby, country: country}
  end
